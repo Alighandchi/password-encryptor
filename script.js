@@ -13,20 +13,37 @@ function encrypt() {
     const encodedMessage = btoa(unescape(encodeURIComponent(input)));
     const encrypted = window.btoa(window.btoa(encodedMessage + key));
 
-    document.getElementById('output').value = `Key: ${key}\nEncrypted: ${encrypted}`;
+    document.getElementById('key').value = key;
+    document.getElementById('output').value = encrypted;
 }
 
 function decrypt() {
-    const input = document.getElementById('input').value;
-    if (!input) {
-        alert("Please enter the encrypted message.");
+    const key = document.getElementById('key').value;
+    const encryptedMessage = document.getElementById('output').value;
+    
+    if (!key || !encryptedMessage) {
+        alert("Please enter the key and encrypted message.");
         return;
     }
 
-    const [key, encryptedMessage] = input.split('\nEncrypted: ');
-    const decodedKey = key.replace('Key: ', '');
-    const decryptedMessage = window.atob(window.atob(encryptedMessage));
-    const originalMessage = decodeURIComponent(escape(window.atob(decryptedMessage.replace(decodedKey, ''))));
+    try {
+        const decryptedMessage = window.atob(window.atob(encryptedMessage));
+        const originalMessage = decodeURIComponent(escape(window.atob(decryptedMessage.replace(key, ''))));
+        document.getElementById('input').value = originalMessage;
+    } catch (error) {
+        alert("Decryption failed. Please check the key and encrypted message.");
+    }
+}
 
-    document.getElementById('output').value = originalMessage;
+function downloadFile(filename, content) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
 }
