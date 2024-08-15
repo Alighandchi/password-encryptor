@@ -9,11 +9,25 @@
 <body>
     <div class="container">
         <h1>Password Encryptor/Decryptor</h1>
-        <textarea id="input" placeholder="Enter your Password(s)/Key here..."></textarea>
+        
+        <textarea id="input" placeholder="Enter your password(s) here..."></textarea>
+        
         <button onclick="encrypt()">Encrypt</button>
         <button onclick="decrypt()">Decrypt</button>
-        <textarea id="output" placeholder="Output will appear here..."></textarea>
+
+        <div class="output-section">
+            <h3>Key</h3>
+            <textarea id="key" readonly></textarea>
+            <button onclick="downloadFile('key.txt', document.getElementById('key').value)">Download Key</button>
+        </div>
+
+        <div class="output-section">
+            <h3>Encrypted</h3>
+            <textarea id="output" readonly></textarea>
+            <button onclick="downloadFile('encrypted.txt', document.getElementById('output').value)">Download Encrypted</button>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
